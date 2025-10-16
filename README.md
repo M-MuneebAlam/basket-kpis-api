@@ -158,10 +158,42 @@ Visit **http://localhost:8000/docs** for Swagger UI with all endpoints and schem
 
 ## 🧪 Testing
 
-### Run All Tests
+### Local Testing
 
 ```bash
+# Run tests locally
 pytest test_api.py -v
+
+# Check code quality
+ruff check main.py test_api.py
+```
+
+### Docker Testing
+
+#### One-Command Complete Evaluation
+
+```bash
+# Build, test, lint, and run everything in Docker
+make docker-evaluate
+```
+
+#### Individual Docker Test Commands
+
+```bash
+# Build image
+docker build -t basket-kpis-api .
+
+# Run tests in container
+docker run --rm basket-kpis-api pytest test_api.py -v
+
+# Check code quality in container
+docker run --rm basket-kpis-api ruff check main.py test_api.py
+
+# Run both tests and linting
+make docker-all-tests
+
+# Start application
+docker run -p 8000:8000 basket-kpis-api
 ```
 
 ### Test Coverage
@@ -173,6 +205,8 @@ pytest test_api.py -v
 
 ## 🐳 Docker
 
+### Basic Docker Usage
+
 ```bash
 # Build image
 docker build -t basket-kpis-api .
@@ -183,6 +217,20 @@ docker run -p 8000:8000 basket-kpis-api
 # Or use make
 make docker-build
 make docker-run
+```
+
+### Docker Evaluation Workflow
+
+```bash
+# Complete evaluation in one command
+make docker-evaluate
+
+# Verify API is working
+curl http://localhost:8000/health
+curl http://localhost:8000/kpis
+
+# Clean up when done
+make docker-clean
 ```
 
 ---

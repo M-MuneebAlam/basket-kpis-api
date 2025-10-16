@@ -12,8 +12,9 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
+# Copy application code and tests
 COPY main.py .
+COPY test_api.py .
 COPY orders.csv .
 
 # Change ownership to non-root user
