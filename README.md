@@ -20,30 +20,36 @@ FastAPI service that computes basket-level KPIs from orders data.
 
 ## Quick Start
 
-```bash
-# 1. Install dependencies
-pip install -r requirements.txt
+### Running and Testing
 
-# 2. Run the application
-uvicorn main:app --reload
-
-# 3. Visit http://localhost:8000/docs for interactive API documentation
-```
-
-### Using Makefile (Linux/Mac/WSL)
+**With Make (Linux/Mac/WSL):**
 
 ```bash
-make install    # Install dependencies
-make dev        # Run with auto-reload
-make test       # Run tests
-make lint       # Check code quality
+make docker-evaluate  # Build, test, lint, and run everything
 ```
 
-### Using Docker
+**Without Make (Windows/All Platforms):**
 
 ```bash
 docker build -t basket-kpis-api .
+docker run --rm basket-kpis-api pytest test_api.py -v
+docker run --rm basket-kpis-api ruff check main.py test_api.py
 docker run -p 8000:8000 basket-kpis-api
+```
+
+**Verify it's working:**
+
+```bash
+curl http://localhost:8000/health
+curl http://localhost:8000/kpis
+```
+
+### For Development Only
+
+```bash
+pip install -r requirements.txt
+uvicorn main:app --reload
+# Visit http://localhost:8000/docs
 ```
 
 ---
@@ -156,123 +162,10 @@ Visit **http://localhost:8000/docs** for Swagger UI with all endpoints and schem
 
 ---
 
-## 🧪 Testing
-
-### Local Testing
-
-```bash
-# Run tests locally
-pytest test_api.py -v
-
-# Check code quality
-ruff check main.py test_api.py
-```
-
-### Docker Testing
-
-#### One-Command Complete Evaluation
-
-```bash
-# Build, test, lint, and run everything in Docker
-make docker-evaluate
-```
-
-#### Individual Docker Test Commands
-
-```bash
-# Build image
-docker build -t basket-kpis-api .
-
-# Run tests in container
-docker run --rm basket-kpis-api pytest test_api.py -v
-
-# Check code quality in container
-docker run --rm basket-kpis-api ruff check main.py test_api.py
-
-# Run both tests and linting
-make docker-all-tests
-
-# Start application
-docker run -p 8000:8000 basket-kpis-api
-```
-
-### Test Coverage
+## 🧪 Test Coverage
 
 - **Unit test**: KPI math validation using in-memory DataFrame
-- **API tests**: All endpoints including validation error handling
-
----
-
-## 🐳 Docker
-
-### Basic Docker Usage
-
-```bash
-# Build image
-docker build -t basket-kpis-api .
-
-# Run container
-docker run -p 8000:8000 basket-kpis-api
-
-# Or use make
-make docker-build
-make docker-run
-```
-
-### Docker Evaluation Workflow
-
-```bash
-# Complete evaluation in one command
-make docker-evaluate
-
-# Verify API is working
-curl http://localhost:8000/health
-curl http://localhost:8000/kpis
-
-# Clean up when done
-make docker-clean
-```
-
----
-
-## Development Tools
-
-### Makefile Commands
-
-The project includes a Makefile for convenient development tasks:
-
-```bash
-make install         # Install dependencies
-make dev            # Run in development mode with auto-reload
-make run            # Run in production mode
-make test           # Run tests
-make lint           # Check code with ruff
-make format         # Format code with ruff
-make docker-build   # Build Docker image
-make docker-run     # Run Docker container
-make docker-clean   # Stop and remove container
-make clean          # Clean cache files
-make help           # Show all available commands
-```
-
-**Note**: Makefile requires `make` (available on Linux/Mac/WSL). On Windows, use direct commands.
-
-### Code Quality with Ruff
-
-The project uses **ruff** for linting and formatting:
-
-```bash
-# Linting (checks for errors and style issues)
-ruff check main.py test_api.py
-
-# Auto-fix issues
-ruff check --fix main.py test_api.py
-
-# Format code
-ruff format main.py test_api.py
-```
-
-**Configuration**: See `pyproject.toml` for ruff settings (line length, rules, etc.)
+- **API tests**: Basic endpoints including validation error handling
 
 ---
 
