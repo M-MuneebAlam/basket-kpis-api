@@ -115,16 +115,36 @@ curl http://localhost:8000/orders/distribution
 
 ```json
 {
-  "dow": {
-    "0": {"count": 600905, "proportion": 0.1756},
-    "1": {"count": 587478, "proportion": 0.1717},
-    ...
+  "summary": {
+    "total_orders": 5000,
+    "analysis_period": "All available data"
   },
-  "top_hours": {
-    "10": 288418,
-    "11": 284728,
-    ...
-  }
+  "day_of_week_distribution": [
+    {
+      "day": "Sunday",
+      "day_number": 0,
+      "orders": 715,
+      "percentage": 14.3
+    },
+    {
+      "day": "Monday",
+      "day_number": 1,
+      "orders": 683,
+      "percentage": 13.7
+    }
+  ],
+  "peak_hours": [
+    {
+      "hour": "10:00 AM",
+      "hour_24": 10,
+      "orders": 420
+    },
+    {
+      "hour": "11:00 AM",
+      "hour_24": 11,
+      "orders": 380
+    }
+  ]
 }
 ```
 
