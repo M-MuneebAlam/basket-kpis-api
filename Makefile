@@ -29,8 +29,14 @@ docker-clean:
 
 # Complete evaluation workflow
 docker-evaluate:
+	@echo "🔨 Building Docker image..."
 	docker build -t basket-kpis-api .
+	@echo "🧪 Running tests in container..."
 	docker run --rm basket-kpis-api pytest test_api.py -v
+	@echo "🔍 Checking code quality..."
 	docker run --rm basket-kpis-api ruff check main.py test_api.py
+	@echo "🚀 Starting application..."
 	docker run -d -p 8000:8000 --name basket-kpis basket-kpis-api
-	@echo "Application running at http://localhost:8000"
+	@echo "✅ Application running at http://localhost:8000"
+	@echo "📚 API docs available at http://localhost:8000/docs"
+	@echo "🧹 Use 'make docker-clean' to stop and remove container"
